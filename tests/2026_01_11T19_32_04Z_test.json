@@ -1,0 +1,35 @@
+{
+  "$schema": "../schema.json",
+  "name": "A sample test specification",
+  "description": "This is a sample test specification.",
+  "requests": {
+    "get_products": {
+      "method": "get",
+      "url": "https://dummyjson.com/products"
+    },
+    "add_product": {
+      "method": "post",
+      "url": "https://dummyjson.com/products/add",
+      "body": {
+        "title": "hello_world",
+        "price": "{{gen:number}}"
+      }
+    }
+  },
+  "assertions": [
+    {
+      "property": "get_products.products",
+      "type": "is_not_empty"
+    },
+    {
+      "property": "get_products.products[0].tags",
+      "type": "contains",
+      "value": "beauty"
+    },
+    {
+      "property": "get_products",
+      "type": "status_code",
+      "value": 200
+    }
+  ]
+}
