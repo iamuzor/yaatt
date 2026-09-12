@@ -1,42 +1,39 @@
 # Yet Another API Test Tool (YAATT)
 
-YAATT lets you write API tests in YAML or JSON. Each file sends HTTP requests, then asserts on the responses. No GUI, no Gherkin, no extra DSL.
+Write API tests as YAML files. Run the Docker image. YAATT sends the requests, runs the assertions, and prints a pass or fail.
 
-**Website:** [https://iamuzor.github.io/yaatt/](https://iamuzor.github.io/yaatt/)
+API testing should not need a GUI, Gherkin, or a cloned copy of this repo. If you can write a YAML file and you have Docker, you can run YAATT.
 
-For the full walkthrough — file format, assertions, placeholders, environment variables, and Makefile commands — see the [website docs](https://iamuzor.github.io/yaatt/docs/) or **[docs/USAGE.md](docs/USAGE.md)**.
-
-## Prerequisite
-
-- [Docker](https://docs.docker.com/get-started/get-docker/)
-- A `./tests` folder in the project root
+**Docs:** [https://yaatt.iamuzor.uk/](https://yaatt.iamuzor.uk/)
 
 ## Quick start
 
-```sh
-make build
-make generate          # creates a starter file in ./tests
-make run               # run every file in ./tests
-make run FILE=foo.yml  # run one file
-make dev               # re-run on file changes (loads .env)
-```
-
-Copy the JSON Schema onto the host if you want editor autocomplete. It is optional.
+You need [Docker](https://docs.docker.com/get-started/get-docker/) and a `tests/` folder.
 
 ```sh
-make copy_schema
+mkdir -p tests
+docker run --rm \
+  -v $(pwd)/tests:/app/tests \
+  -t iamuzorr/yaatt
 ```
 
-Raw Docker equivalents and a Bun-only workflow are in the [usage guide](docs/USAGE.md).
+That pulls `iamuzorr/yaatt`, reads every file in `tests/`, and exits `0` on pass or `1` on fail.
+
+Run one file:
+
+```sh
+docker run --rm \
+  -v $(pwd)/tests:/app/tests \
+  -t iamuzorr/yaatt bun run start catalog.yml
+```
 
 ## Test file
 
-A suite looks like this:
+Prefer YAML. Put files in `./tests/`. JSON works the same way.
 
 ```yaml
-"$schema": "../schema.json"
-name: A sample test specification
-description: This is a sample test specification.
+# yaml-language-server: $schema=../schema.json
+name: Product catalog
 requests:
   get_products:
     method: get
@@ -53,25 +50,32 @@ assertions:
     value: 200
   - property: get_products.products
     type: is_not_empty
-  - property: get_products.products[0].tags
-    type: contains
-    value: beauty
 ```
 
-JSON works the same way. Put files in `./tests/`.
+For editor autocomplete on YAML, copy `schema.json` from the image, install the [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension, and keep the comment above. Steps are in the [docs](https://yaatt.iamuzor.uk/docs/getting-started/).
 
 ## Concepts
 
-**Requests** — each key is an id (`get_products`). An HTTP request needs `method` and `url`. `post` / `put` / `patch` also need `body`. `headers` are optional. A delay is `{ delay: 2 }` (seconds).
+**Requests** — each name (`get_products`) is how later steps refer to that reply. An HTTP request needs `method` and `url`. `post` / `put` / `patch` also need `body`. A delay is `{ delay: 2 }` (seconds).
 
-**Assertions** — each item has `type`, `property` (a path into a cached response), and usually `value`. Supported types: `is_equals`, `is_not_empty`, `is_greater_than`, `is_less_than`, `contains`, `has_property`, `status_code`.
+**Assertions** — each item has `type`, `property`, and usually `value`. Types: `is_equals`, `is_not_empty`, `is_greater_than`, `is_less_than`, `contains`, `has_property`, `status_code`.
 
-**Placeholders** — use these in `url`, `headers`, and `body`:
+**Placeholders** — in `url`, `headers`, and `body`:
 
-- `{{get_products.id}}` — value from a previous response
+- `{{get_products.id}}` — field from an earlier reply
 - `{{env:API_URL}}` — environment variable
 - `{{gen:uuid}}` / `{{gen:number}}` — generated values
 
-## Why YAATT
+Makefile, environment variables, and CI examples: [Docker and CI](https://yaatt.iamuzor.uk/docs/docker-and-ci/).
 
-See [docs/MOTIVATION.md](docs/MOTIVATION.md).
+## Developing YAATT
+
+This repo is the image source, not the user install path.
+
+```sh
+make build
+make test
+make run
+```
+
+`make run` mounts `./tests` into a locally built `iamuzorr/yaatt` image.
