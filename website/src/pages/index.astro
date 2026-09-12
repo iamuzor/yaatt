@@ -1,0 +1,170 @@
+---
+import Base from "../layouts/Base.astro";
+import { path } from "../lib/paths";
+---
+
+<Base
+  title="YAATT"
+  description="Yet Another API Test Tool. Write API tests as YAML files, run the Docker image, and see a clear pass or fail."
+>
+  <main>
+    <section class="hero wrap">
+      <p class="kicker">Yet Another API Test Tool</p>
+      <h1>API testing shouldn’t feel like filing taxes.</h1>
+      <p class="lede">
+        Write a test as a YAML file. Run the Docker image. YAATT sends the
+        requests, runs the assertions, and prints a pass or fail. No clone, no
+        extra app, no special test language.
+      </p>
+      <div class="actions">
+        <a class="btn" href={path("/docs/")}>Get started</a>
+        <a class="btn btn-ghost" href="https://github.com/iamuzor/yaatt">View on GitHub</a>
+      </div>
+
+      <div class="pipeline" aria-label="How YAATT runs">
+        <article>
+          <span>01</span>
+          <p>YAML in</p>
+        </article>
+        <article>
+          <span>02</span>
+          <p>Requests run</p>
+        </article>
+        <article>
+          <span>03</span>
+          <p>Assertions checked</p>
+        </article>
+        <article>
+          <span>04</span>
+          <p>Results out</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <div class="split">
+        <div>
+          <h2>The job was always simple.</h2>
+          <p>
+            Call an API. Write assertions on the reply. Folders, extra syntax,
+            and workspace sync get in the way of that.
+          </p>
+        </div>
+        <ul class="pain-list">
+          <li>
+            <strong>Postman is great for clicking buttons.</strong>
+            The tests are hard to read, and harder to review in a pull request.
+          </li>
+          <li>
+            <strong>Special test languages look nice at first.</strong>
+            You end up maintaining the framework instead of the tests.
+          </li>
+          <li>
+            <strong>YAATT is the file you already wanted.</strong>
+            Name each request. Say what the response should look like. That is the test.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <h2>What you get</h2>
+      <p>If you can write a YAML file, you can write a test.</p>
+      <div class="features" style="margin-top: 1.5rem;">
+        <article>
+          <h3>YAML first</h3>
+          <p>Write tests in YAML so they stay easy to scan. JSON works too. Put files in <code>tests/</code>.</p>
+        </article>
+        <article>
+          <h3>Editor help</h3>
+          <p>Add <code>schema.json</code> and your editor can complete fields and catch mistakes.</p>
+        </article>
+        <article>
+          <h3>Just Docker</h3>
+          <p>Pull <code>iamuzorr/yaatt</code> and mount <code>tests/</code>. You never have to clone this repo to run tests.</p>
+        </article>
+        <article>
+          <h3>Assertions that read clearly</h3>
+          <p>Equals, not empty, status code, and a few more. Each line says what it is asserting.</p>
+        </article>
+        <article>
+          <h3>Reuse values</h3>
+          <p>Take a field from an earlier response, read an environment variable, or generate a unique id.</p>
+        </article>
+        <article>
+          <h3>Readable output</h3>
+          <p>Every request and assertion is printed. The run passes or fails like any other test command.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <h2>A test is just a file</h2>
+      <p>
+        YAATT sends each request from top to bottom. It remembers each response
+        by the name you gave it, then runs your assertions against those
+        replies.
+      </p>
+      <div class="terminal" style="margin-top: 1.5rem;">
+        <div class="terminal-bar">
+          <span class="terminal-dot"></span>
+          <span class="terminal-dot"></span>
+          <span class="terminal-dot"></span>
+          <span>tests/catalog.yml</span>
+        </div>
+        <div class="terminal-grid">
+          <div class="terminal-pane">
+            <div class="terminal-label">Suite</div>
+            <pre>{`name: Product catalog
+requests:
+  get_products:
+    method: get
+    url: https://dummyjson.com/products
+  add_product:
+    method: post
+    url: https://dummyjson.com/products/add
+    body:
+      title: hello_world
+      price: "{{gen:number}}"
+assertions:
+  - property: get_products
+    type: status_code
+    value: 200
+  - property: get_products.products
+    type: is_not_empty`}</pre>
+          </div>
+          <div class="terminal-pane">
+            <div class="terminal-label">Output</div>
+            <pre><span class="dim">TEST SUITE</span>
+Product catalog (catalog.yml)
+
+<span class="dim">REQUESTS</span>
+🚀 get_products    200    0.31 secs
+🚀 add_product     201    0.42 secs
+
+<span class="dim">ASSERTIONS</span>
+<span class="pass">Pass  get_products status code is "200"</span>
+<span class="pass">Pass  get_products.products is not empty</span>
+
+<span class="pass">RESULT: PASSED</span> <span class="dim">(2 passed, 0.89s)</span></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <h2>Quick start</h2>
+      <div class="start-grid" style="margin-top: 1.5rem;">
+        <pre>{`mkdir -p tests
+docker run --rm \\
+  -v $(pwd)/tests:/app/tests \\
+  -t iamuzorr/yaatt`}</pre>
+        <p class="note">
+          Put YAML in <code>tests/</code>, then run the published image. A
+          Makefile, environment variables, and CI examples are in the
+          <a href={path("/docs/")}>usage docs</a>.
+        </p>
+      </div>
+    </section>
+  </main>
+</Base>

@@ -1,6 +1,6 @@
 # YAATT Usage Guide
 
-YAATT (Yet Another API Test Tool) runs API tests written as JSON or YAML files. Each file is a suite: it sends HTTP requests in order, then checks assertions against the cached responses.
+YAATT (Yet Another API Test Tool) runs API tests written as YAML or JSON files. YAML is easier to read; both formats use the same fields. Each file is a suite: it sends HTTP requests in order, then checks assertions against the cached responses.
 
 ## Prerequisites
 
@@ -31,23 +31,19 @@ make copy_schema
 
 Point test files at the schema:
 
-```json
-{
-  "$schema": "../schema.json"
-}
+```yaml
+"$schema": "../schema.json"
 ```
 
 ## Add a test file
 
-Generate a starter JSON file in `tests/`:
+Prefer YAML. Write a `.yml` file in `tests/`, or generate a starter:
 
 ```sh
 make generate
 ```
 
-The file is named with a UTC timestamp, for example `2026_09_12T11_30_00Z_test.json`. Rename it to something meaningful.
-
-You can also write YAML. Both formats use the same fields.
+`make generate` creates a timestamped JSON file, for example `2026_09_12T11_30_00Z_test.json`. Rename it, or copy the same fields into a `.yml` file. Both formats use the same fields.
 
 ## Run tests
 
@@ -170,21 +166,16 @@ Each entry under `requests` is either an HTTP call or a delay. The object key is
 
 `GET` requests never send a body. Other methods send `JSON.stringify(body)`.
 
-```json
-{
-  "login": {
-    "method": "post",
-    "url": "{{env:API_URL}}/auth/login",
-    "headers": {
-      "Content-Type": "application/json",
-      "X-Request-Id": "{{gen:uuid}}"
-    },
-    "body": {
-      "email": "{{env:TEST_USER_EMAIL}}",
-      "password": "{{env:TEST_USER_PASSWORD}}"
-    }
-  }
-}
+```yaml
+login:
+  method: post
+  url: "{{env:API_URL}}/auth/login"
+  headers:
+    Content-Type: application/json
+    X-Request-Id: "{{gen:uuid}}"
+  body:
+    email: "{{env:TEST_USER_EMAIL}}"
+    password: "{{env:TEST_USER_PASSWORD}}"
 ```
 
 ### Delays
@@ -206,17 +197,13 @@ String values in `url`, `headers`, and `body` can contain `{{...}}` placeholders
 
 `{{request_id.path}}` reads a value from a request that already ran. Paths use lodash-style accessors, including array indexes.
 
-```json
-{
-  "create_comment": {
-    "method": "post",
-    "url": "{{env:API_URL}}/comments",
-    "body": {
-      "postId": "{{create_post.id}}",
-      "title": "{{get_products.products[0].title}}"
-    }
-  }
-}
+```yaml
+create_comment:
+  method: post
+  url: "{{env:API_URL}}/comments"
+  body:
+    postId: "{{create_post.id}}"
+    title: "{{get_products.products[0].title}}"
 ```
 
 The referenced path must exist. A missing value stops the suite with an error.
@@ -237,13 +224,10 @@ docker run --rm \
 
 `make dev` already passes `--env-file $(PWD)/.env`. `make run` does not; add `-e` / `--env-file` to the Docker command, or export the variables in your shell when running with Bun.
 
-```json
-{
-  "get_products": {
-    "method": "get",
-    "url": "{{env:DUMMY_API_URL}}/products/3"
-  }
-}
+```yaml
+get_products:
+  method: get
+  url: "{{env:DUMMY_API_URL}}/products/3"
 ```
 
 ### Generated values
@@ -255,17 +239,13 @@ docker run --rm \
 | `{{gen:uuid}}`  | UUID v7                                     |
 | `{{gen:number}}`| Random integer from `0` to `999` as a string |
 
-```json
-{
-  "add_product": {
-    "method": "post",
-    "url": "https://dummyjson.com/products/add",
-    "body": {
-      "title": "sku-{{gen:uuid}}",
-      "price": "{{gen:number}}"
-    }
-  }
-}
+```yaml
+add_product:
+  method: post
+  url: https://dummyjson.com/products/add
+  body:
+    title: "sku-{{gen:uuid}}"
+    price: "{{gen:number}}"
 ```
 
 Unknown generators (`{{gen:date}}`, and so on) fail the run.

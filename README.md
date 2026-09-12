@@ -1,8 +1,10 @@
 # Yet Another API Test Tool (YAATT)
 
-YAATT lets you write API tests in JSON or YAML. Each file sends HTTP requests, then asserts on the responses. No GUI, no Gherkin, no extra DSL.
+YAATT lets you write API tests in YAML or JSON. Each file sends HTTP requests, then asserts on the responses. No GUI, no Gherkin, no extra DSL.
 
-For the full walkthrough — file format, assertions, placeholders, environment variables, and Makefile commands — see **[docs/USAGE.md](docs/USAGE.md)**.
+**Website:** [https://iamuzor.github.io/yaatt/](https://iamuzor.github.io/yaatt/)
+
+For the full walkthrough — file format, assertions, placeholders, environment variables, and Makefile commands — see the [website docs](https://iamuzor.github.io/yaatt/docs/) or **[docs/USAGE.md](docs/USAGE.md)**.
 
 ## Prerequisite
 

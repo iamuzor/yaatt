@@ -1,0 +1,26 @@
+---
+import { getCollection } from "astro:content";
+import { path } from "../lib/paths";
+
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+const current = Astro.url.pathname;
+---
+
+<aside class="docs-side">
+  <h2>Usage</h2>
+  <ol>
+    {
+      docs.map((doc) => {
+        const href = path(`/docs/${doc.id}/`);
+        const active = current === href || current.endsWith(`/${doc.id}/`);
+        return (
+          <li>
+            <a href={href} aria-current={active ? "page" : undefined}>
+              {doc.data.title}
+            </a>
+          </li>
+        );
+      })
+    }
+  </ol>
+</aside>

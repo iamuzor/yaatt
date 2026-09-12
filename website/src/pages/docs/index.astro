@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import DocsSidebar from "../../components/DocsSidebar.astro";
+import { path } from "../../lib/paths";
+
+const docs = (await getCollection("docs")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Docs"
+  description="How to write YAATT tests and run them with the Docker image."
+  wide
+>
+  <div class="docs-wrap docs-shell">
+    <DocsSidebar />
+    <article class="docs-content">
+      <h1>Usage guide</h1>
+      <p class="docs-lead">
+        Each file in <code>tests/</code> is one test. Run
+        <code>iamuzorr/yaatt</code> with that folder mounted. YAATT sends the
+        requests from top to bottom, remembers each reply by name, then runs the
+        assertions you listed.
+      </p>
+      <div class="prose">
+        <ol>
+          {
+            docs.map((doc) => (
+              <li>
+                <a href={path(`/docs/${doc.id}/`)}>{doc.data.title}</a>
+                {" — "}
+                {doc.data.description}
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </article>
+  </div>
+</Base>

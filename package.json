@@ -7,7 +7,7 @@
     "test": "bun test",
     "start": "bun index.ts",
     "dev": "bun --watch index.ts",
-    "generate": "cp -r src/example_test.json ./tests/$(date -u +\"%Y_%m_%dT%H_%M_%SZ\")_test.json "
+    "generate": "cp -r src/example_test.yml ./tests/$(date -u +\"%Y_%m_%dT%H_%M_%SZ\")_test.yml"
   },
   "author": "",
   "license": "ISC",
