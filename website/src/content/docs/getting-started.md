@@ -44,7 +44,7 @@ docker run --rm \
   -t iamuzorr/yaatt bun run generate
 ```
 
-That creates a timestamped JSON file. Rename it, or copy the same fields into a `.yml` file. Both formats use the same fields. See [Test files](../test-files/) for the shape.
+That creates a timestamped test `.yml` file. Rename it to whatever you want. See [Test files](../test-files/) for the shape.
 
 ## Lint YAML in your editor
 
