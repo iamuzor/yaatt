@@ -14,7 +14,7 @@ Each item under `requests` is either an HTTP call or a pause. The name you give 
 | `url` | Yes | Full URL. Put query strings in the URL itself. |
 | `body` | Required for `post`, `put`, and `patch` | A JSON object. Not allowed on `get` or `delete`. |
 | `headers` | No | If you omit them, YAATT sends `Content-Type: application/json`. |
-| `description` | No | A note for humans. YAATT does not use it. |
+| `description` | No | A note for humans. YAATT displays this when it runs your test. |
 
 `GET` requests never send a body. Other methods send the `body` as JSON.
 

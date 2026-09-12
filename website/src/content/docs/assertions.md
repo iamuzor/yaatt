@@ -16,7 +16,7 @@ An assertion has a `type`, a `property`, and usually a `value`. `property` point
 | `is_less_than` | Number | The field is less than `value`. |
 | `contains` | Any | The field is a list that includes `value`. |
 | `has_property` | String | The object has a field named `value`. |
-| `status_code` | Number | The request returned that HTTP status. |
+| `status_code` | Number | The response HTTP status matvches `value`. |
 
 ```yaml
 assertions:
