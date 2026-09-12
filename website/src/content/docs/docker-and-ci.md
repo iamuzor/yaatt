@@ -14,7 +14,7 @@ Drop this `Makefile` in your API repo so you can run `make run` instead of typin
 IMAGE    = iamuzorr/yaatt
 TEST_DIR = $(PWD)/tests
 
-.PHONY: generate run dev copy_schema
+.PHONY: generate run copy_schema
 
 copy_schema:
 	YATTCID=$$(docker create $(IMAGE)); \
@@ -26,20 +26,14 @@ generate:
 
 run:
 	docker run --rm -v $(TEST_DIR):/app/tests -t $(IMAGE) bun run start $(FILE)
-
-dev:
-	docker run --rm -v $(TEST_DIR):/app/tests --env-file $(PWD)/.env -t $(IMAGE) bun run dev $(FILE)
 ```
 
 | Command | What it does |
 | --- | --- |
-| `make copy_schema` | Copy `schema.json` onto your machine for editor help |
+| `make copy_schema` | Copy `schema.json` onto your machine. Then install the YAML extension and add the schema comment — see [Lint YAML in your editor](../getting-started/#lint-yaml-in-your-editor). |
 | `make generate` | Create a starter test in `tests/` |
 | `make run` | Run every test |
 | `make run FILE=catalog.yml` | Run one test file |
-| `make dev` | Re-run when files change, and load `.env` |
-
-`make dev` needs a `.env` file in the project root. Do not use it in CI. Watch mode keeps running and will not finish the job.
 
 ## Environment variables
 

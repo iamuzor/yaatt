@@ -1,5 +1,5 @@
 ---
-"$schema": "../schema.json"
+# yaml-language-server: $schema=../schema.json
 name: A sample test specification
 description: This is a sample test specification.
 requests:

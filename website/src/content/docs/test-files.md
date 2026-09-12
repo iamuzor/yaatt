@@ -6,10 +6,12 @@ order: 2
 
 A test file needs three things: a `name`, a list of `requests`, and a list of `assertions`. `description` is optional. YAML is the usual choice; JSON works the same way.
 
+For autocomplete and linting in VS Code or Cursor, copy `schema.json`, install the YAML extension, and keep the `# yaml-language-server` comment shown below. Full steps are in [Getting started](../getting-started/#lint-yaml-in-your-editor).
+
 Think of `requests` as the calls you want to make, and `assertions` as what a good reply looks like.
 
 ```yaml
-"$schema": "../schema.json"
+# yaml-language-server: $schema=../schema.json
 name: Product catalog
 description: List products and create one
 requests:

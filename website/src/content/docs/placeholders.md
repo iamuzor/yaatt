@@ -37,7 +37,7 @@ docker run --rm \
   -t iamuzorr/yaatt bun run start
 ```
 
-`make dev` already reads `.env`. `make run` does not; pass `-e` or `--env-file` on the `docker run` command. See [Docker and CI](../docker-and-ci/).
+Pass `-e` or `--env-file` on the `docker run` command. See [Docker and CI](../docker-and-ci/).
 
 ```yaml
 get_products:

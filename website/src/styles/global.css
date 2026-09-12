@@ -208,17 +208,47 @@ pre {
 
 .pipeline {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
   margin: 3rem auto 0;
   max-width: 48rem;
   text-align: center;
 }
 
-.pipeline article {
-  padding: 1rem 1.1rem;
+.pipeline article,
+.features article {
   border: 1px solid var(--line);
   background: var(--bg-raised);
+  box-shadow: 0 0 0 0 transparent;
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.45s ease;
+}
+
+.pipeline article {
+  padding: 1rem 1.1rem;
+}
+
+.pipeline article:hover,
+.features article:hover {
+  border-color: var(--pass);
+  background: color-mix(in srgb, var(--bg-raised) 70%, var(--pass-dim));
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--pass) 18%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pipeline article,
+  .features article {
+    transition: none;
+  }
+
+  .pipeline article:hover,
+  .features article:hover {
+    transform: none;
+  }
 }
 
 .pipeline span {
@@ -282,8 +312,6 @@ pre {
 
 .features article {
   padding: 1.15rem;
-  border: 1px solid var(--line);
-  background: var(--bg-raised);
 }
 
 .features h3 {
@@ -363,6 +391,10 @@ pre {
   overflow-x: auto;
   font-size: 0.78rem;
   line-height: 1.55;
+}
+
+.terminal-pane .astro-code {
+  background: transparent !important;
 }
 
 .terminal .pass {

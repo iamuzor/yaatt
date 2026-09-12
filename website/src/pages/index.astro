@@ -1,6 +1,28 @@
 ---
+import { Code } from "astro:components";
 import Base from "../layouts/Base.astro";
 import { path } from "../lib/paths";
+
+const catalogYaml = `name: Product catalog
+requests:
+  get_products:
+    method: get
+    url: https://dummyjson.com/products
+  add_product:
+    method: post
+    url: https://dummyjson.com/products/add
+    body:
+      title: hello_world
+      price: "{{gen:number}}"
+assertions:
+  - property: get_products
+    type: status_code
+    value: 200
+  - property: get_products.products
+    type: is_not_empty
+  - property: get_products.products[0].id
+    type: is_equals
+    value: 999`;
 ---
 
 <Base
@@ -18,25 +40,20 @@ import { path } from "../lib/paths";
       </p>
       <div class="actions">
         <a class="btn" href={path("/docs/")}>Get started</a>
-        <a class="btn btn-ghost" href="https://github.com/iamuzor/yaatt">View on GitHub</a>
       </div>
 
       <div class="pipeline" aria-label="How YAATT runs">
         <article>
           <span>01</span>
-          <p>YAML in</p>
+          <p>Write YAML</p>
         </article>
         <article>
           <span>02</span>
-          <p>Requests run</p>
+          <p>Run tests</p>
         </article>
         <article>
           <span>03</span>
-          <p>Assertions checked</p>
-        </article>
-        <article>
-          <span>04</span>
-          <p>Results out</p>
+          <p>View results</p>
         </article>
       </div>
     </section>
@@ -76,8 +93,12 @@ import { path } from "../lib/paths";
           <p>Write tests in YAML so they stay easy to scan. JSON works too. Put files in <code>tests/</code>.</p>
         </article>
         <article>
-          <h3>Editor help</h3>
-          <p>Add <code>schema.json</code> and your editor can complete fields and catch mistakes.</p>
+          <h3>YAML linting</h3>
+          <p>
+            Copy <code>schema.json</code>, install the YAML extension, and add a
+            schema comment. Autocomplete and errors while you write.
+            <a href={path("/docs/getting-started/")}>See the steps</a>.
+          </p>
         </article>
         <article>
           <h3>Just Docker</h3>
@@ -103,7 +124,7 @@ import { path } from "../lib/paths";
       <p>
         YAATT sends each request from top to bottom. It remembers each response
         by the name you gave it, then runs your assertions against those
-        replies.
+        replies. A fail prints what you expected next to what came back.
       </p>
       <div class="terminal" style="margin-top: 1.5rem;">
         <div class="terminal-bar">
@@ -115,23 +136,7 @@ import { path } from "../lib/paths";
         <div class="terminal-grid">
           <div class="terminal-pane">
             <div class="terminal-label">Suite</div>
-            <pre>{`name: Product catalog
-requests:
-  get_products:
-    method: get
-    url: https://dummyjson.com/products
-  add_product:
-    method: post
-    url: https://dummyjson.com/products/add
-    body:
-      title: hello_world
-      price: "{{gen:number}}"
-assertions:
-  - property: get_products
-    type: status_code
-    value: 200
-  - property: get_products.products
-    type: is_not_empty`}</pre>
+            <Code code={catalogYaml} lang="yaml" theme="github-dark-default" />
           </div>
           <div class="terminal-pane">
             <div class="terminal-label">Output</div>
@@ -145,8 +150,9 @@ Product catalog (catalog.yml)
 <span class="dim">ASSERTIONS</span>
 <span class="pass">Pass  get_products status code is "200"</span>
 <span class="pass">Pass  get_products.products is not empty</span>
+<span class="fail">Fail  get_products.products[0].id is equals to "999". (actual: 1)</span>
 
-<span class="pass">RESULT: PASSED</span> <span class="dim">(2 passed, 0.89s)</span></pre>
+<span class="fail">RESULT: FAILED</span> <span class="dim">(2 passed, 1 failed, 0.89s)</span></pre>
           </div>
         </div>
       </div>
@@ -164,6 +170,20 @@ docker run --rm \\
           Makefile, environment variables, and CI examples are in the
           <a href={path("/docs/")}>usage docs</a>.
         </p>
+      </div>
+    </section>
+
+    <section class="section wrap" id="contact">
+      <h2>Work with me</h2>
+      <p>
+        YAATT is a side project by
+        <a href="https://iamuzor.uk/">Chibuzor Ugwunna</a>, a software engineer
+        who builds APIs and the tools around them. If you want help shipping
+        something similar — or you are hiring — send a note.
+      </p>
+      <div class="actions" style="margin-top: 1.5rem;">
+        <a class="btn" href="https://iamuzor.uk/">Get in touch</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/iamuzor">LinkedIn</a>
       </div>
     </section>
   </main>

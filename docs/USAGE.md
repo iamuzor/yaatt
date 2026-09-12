@@ -29,11 +29,15 @@ Copy the JSON Schema onto the host if you want editor autocomplete and validatio
 make copy_schema
 ```
 
-Point test files at the schema:
+Point YAML files at the schema with a language-server comment. VS Code and Cursor need the [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml) extension (`redhat.vscode-yaml`) first:
 
 ```yaml
-"$schema": "../schema.json"
+# yaml-language-server: $schema=../schema.json
 ```
+
+Do not add `yaml.schemas` to VS Code settings unless that extension is installed. Without it, VS Code reports the setting as unknown.
+
+JSON files can use `"$schema": "../schema.json"` in the object. That is built-in JSON support and does not need the YAML extension.
 
 ## Add a test file
 
