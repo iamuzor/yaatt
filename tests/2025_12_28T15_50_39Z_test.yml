@@ -13,19 +13,19 @@ requests:
       title: hello_world
       price: "{{gen:number}}"
 assertions:
-- property: get_products
-  type: status_code
-  value: 200
-- property: get_products
-  type: has_property
-  value: products
-- property: get_products.products
-  type: is_not_empty
-- property: get_products.products[0].description
-  type: is_not_empty
-- property: get_products.products[0].tags
-  type: contains
-  value: beauty
-- property: add_product
-  type: has_property
-  value: id
+  - property: get_products
+    type: status_code
+    value: 200
+  - property: get_products
+    type: has_property
+    value: products
+  - property: get_products.products
+    type: is_not_empty
+  - property: get_products.products[0].description
+    type: is_not_empty
+  - property: get_products.products[0].tags
+    type: contains
+    value: beauty
+  - property: add_product
+    type: has_property
+    value: id

@@ -6,7 +6,7 @@
 
 [x] Environment variable support.
 
-[ ] Document how environment variables must be set. ie. `{{env:EXAMPLE}}`
+[x] Document how environment variables must be set. ie. `{{env:EXAMPLE}}`
 
 [x] More assertion types e.g is_not_equal, is_greater_than, is_less_than, in_array, status_code
 

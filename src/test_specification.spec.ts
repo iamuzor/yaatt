@@ -5,7 +5,7 @@ import { Cache } from "./cache";
 describe("TestSpecification", () => {
   test("should throw error if specification data is not valid", () => {
     expect(() => new TestSpecification({} as any, new Cache())).toThrowError(
-      Error
+      Error,
     );
   });
 
@@ -29,7 +29,7 @@ describe("TestSpecification", () => {
           },
         ],
       },
-      new Cache()
+      new Cache(),
     );
   });
 });
